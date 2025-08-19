@@ -25,5 +25,12 @@ jobs:
         if: matrix.node-version >= '18'
         run: echo "NODE_OPTIONS=--openssl-legacy-provider" >> $GITHUB_ENV
       - run: npm ci
-      - run: npm run build
+      - name: Build with legacy OpenSSL provider
+        if: matrix.node-version >= '18'
+        run: npm run build
+        env:
+          NODE_OPTIONS: --openssl-legacy-provider
+      - name: Build without legacy OpenSSL provider
+        if: matrix.node-version < '18'
+        run: npm run build
       - run: npm test
